@@ -259,7 +259,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					.then(response => response.json() )
 					.then(data =>{
               const url = "https://localbitcoins.com/api/equation/(bitstampusd_avg*USD_in_VES)/bitstampusd_avg"
-              fetch(url)
+              fetch(url,{
+              method: 'GET',
+              headers: {
+                'Access-Control-Allow-Origin': 'https://obetoday.000webhostapp.com/'
+              }
+              })
               .then(response => response.json() )
               .then(data =>{
                 
