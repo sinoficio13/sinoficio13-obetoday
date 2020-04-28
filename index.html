@@ -258,6 +258,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					fetch(url)
 					.then(response => response.json() )
 					.then(data =>{
+              const url = "https://localbitcoins.com/api/equation/(bitstampusd_avg*USD_in_VES)/bitstampusd_avg"
+              fetch(url)
+              .then(response => response.json() )
+              .then(data =>{
+                
+
+               /* var numero = `${data.data}`; 
+                var dolartodaybtc = parseFloat(numero);
+
+                
+                let element = document.getElementById('dolartodaybtc')
+                element.innerHTML =`<p>Bs `+ new Intl.NumberFormat().format(dolartodaybtc) +` </p>`;*/
+              console.log(data)
+              
+                
+              })
 						
 
 						var numero = `${data.USD.bitcoin_ref}`; 
@@ -266,11 +282,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						
 						let element = document.getElementById('dolartodaybtc')
 						element.innerHTML =`<p>Bs `+ new Intl.NumberFormat().format(dolartodaybtc) +` </p>`;
-						console.log(data)
-						
-						function myFunction() {
-							var hola = `hola`;
-						}
+											
+					
 						
 					})
 
