@@ -19,8 +19,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!--ESTILOS DEL MAIN-->
+  <link rel="stylesheet" type="text/css" href="dist/css/main.css">
 </head>
 <body class="hold-transition layout-top-nav">
+  <div class="loader"></div>
 <div class="wrapper">
 
   <!-- Navbar -->
@@ -252,12 +255,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
-</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE -->
+<script src="dist/js/adminlte.js"></script>
+
 <script type="text/javascript">
 		
 
@@ -275,23 +278,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					const url = "https://s3.amazonaws.com/dolartoday/data.json"
 					fetch(url)
 					.then(response => response.json() )
-					.then(data =>{
-              const url = "https://localbitcoins.com/api/equation/(bitstampusd_avg*USD_in_VES)/bitstampusd_avg"
-              fetch(url)
-              .then(response => response.json() )
-              .then(data =>{
-                
-
-               /* var numero = `${data.data}`; 
-                var dolartodaybtc = parseFloat(numero);
-
-                
-                let element = document.getElementById('dolartodaybtc')
-                element.innerHTML =`<p>Bs `+ new Intl.NumberFormat().format(dolartodaybtc) +` </p>`;*/
-              console.log(data)
-              
-                
-              })
+					.then(data =>{           
 						
 
 						var numero = `${data.USD.bitcoin_ref}`; 
@@ -321,16 +308,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 			let element = document.getElementById('dolartoday')
 			element.innerHTML = `<p>Bs ` + new Intl.NumberFormat().format(dolartoday) +` </p>`;
-			console.log(data)
+			
 
 			
 		})
 		var total = parseFloat(dolartoday);	
-		console.log()	
+		
 		let element = document.getElementById('total')
 			element.innerHTML = `TotalPromedio`;
+
+      $(window).load(function() {
+          $(".loader").fadeOut("slow");
+      });
 
 
 
 	</script>
+  </body>
 </html>
