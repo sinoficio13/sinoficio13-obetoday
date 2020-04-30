@@ -156,8 +156,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </td>
                     <td id="total" style="font-weight: 900;"></td>                    
                     <td>
-                      <a href="https://localbitcoins.com/api/equation/(bitstampusd_avg*USD_in_VES)/bitstampusd_avg" target="blank_" class="text-muted">
-                        <i class="fas fa-search"></i>
+                      
                       </a>
                     </td>
                   </tr>
@@ -261,65 +260,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
 
-<script type="text/javascript">
-		
+<script type="text/javascript">	
 
-		const url = "https://s3.amazonaws.com/dolartoday/data.json"
-
-		fetch(url)
-		.then(response => response.json() )
-		.then(data =>{
-
-			const url = "https://api.yadio.io/rate/usd"
-
-			fetch(url)
-			.then(response => response.json() )
-			.then(yadio =>{
-					const url = "https://s3.amazonaws.com/dolartoday/data.json"
-					fetch(url)
-					.then(response => response.json() )
-					.then(data =>{           
-						
-
-						var numero = `${data.USD.bitcoin_ref}`; 
-						var dolartodaybtc = parseFloat(numero);
-
-						
-						let element = document.getElementById('dolartodaybtc')
-						element.innerHTML =`<p>Bs `+ new Intl.NumberFormat().format(dolartodaybtc) +` </p>`;
-											
-					
-						
-					})
-
-
-				var numero = `${yadio.rate}`; 
-				var yadio = parseFloat(numero);
-
-				
-				let element = document.getElementById('yadio')
-				element.innerHTML =`<p>Bs `+ new Intl.NumberFormat().format(yadio) + ` </p>`;
-				
-				
-			})
-
-			var numero = `${data.USD.dolartoday}`; 
-			var dolartoday = parseFloat(numero);
-
-			let element = document.getElementById('dolartoday')
-			element.innerHTML = `<p>Bs ` + new Intl.NumberFormat().format(dolartoday) +` </p>`;
-			
-
-			
-		})
-		var total = parseFloat(dolartoday);	
-		
-		let element = document.getElementById('total')
-			element.innerHTML = `TotalPromedio`;
 
       $(window).load(function() {
           $(".loader").fadeOut("slow");
+
+
       });
+      function imprimir(id,valor){
+              let element = document.getElementById(id)
+            element.innerHTML =`<p>Bs `+ new Intl.NumberFormat().format(valor) +` </p>`;
+            
+            }
+            function total(id,v1,v2,v3,v4){
+              var vv1= parseFloat(v1);
+              var vv2= parseFloat(v2);
+              var vv3= parseFloat(v3);
+              var vv4= parseFloat(v4);
+
+              var total = (vv1 + vv2 + vv3 +vv4)/4;
+              let element = document.getElementById(id)
+              element.innerHTML =`<p>Bs `+ new Intl.NumberFormat().format(total) +` </p>`;
+            }
+
+
+      const url = "https://api-obetoday.herokuapp.com/averages"
+          fetch(url)
+          .then(response => response.json() )
+          .then(data =>{ 
+
+            imprimir("dolartoday",`${data.dolartoday_usd}`);
+            imprimir("yadio",`${data.yadio}`);
+            imprimir("dolartodaybtc",`${data.dolartoday_btc}`);
+            imprimir("local",`${data.localbitcoin}`);
+            total("total",`${data.dolartoday_usd}`,`${data.yadio}`,`${data.dolartoday_btc}`,`${data.localbitcoin}`)
+
+
+          })
+           
 
 
 
