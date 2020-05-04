@@ -8,3 +8,6 @@
     background: url('../img/gif/loading.gif') 50% 50% no-repeat rgb(255,255,255);
     opacity: 1;
 }
+.oculto{
+	display: none;
+}

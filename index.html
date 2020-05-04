@@ -40,7 +40,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" type="text/css" href="dist/css/main.css">
 </head>
 <body class="hold-transition layout-top-nav">
-  <div class="loader"></div>
+  <div class="loadr"></div>
 <div class="wrapper">
 
   <!-- Navbar -->
@@ -52,7 +52,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <span class="brand-text font-weight-light"><span style="font-weight: 900;">Obe</span>Today</span>
       </a>
       
-      <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler order-1 oculto" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -83,7 +83,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="small-box bg-success">
               <div class="inner">
                  <h3 id="labelprome">0</h3>
-
+                 <br>
                 <p style="font-weight: 900;">VES/USD</p>
               </div>
               <div class="icon">
@@ -99,7 +99,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="small-box bg-warning">
               <div class="inner">
                 <h3 id="labelbtc">0</h3>
-
+                <span id="labelbtcusd">0</span>
                 <p style="font-weight: 900;">BITCOIN</p>
               </div>
               <div class="icon">
@@ -115,8 +115,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="small-box bg-danger">
               <div class="inner">
                  <h3 id="labelbcv">0</h3>
-
-                <p style="font-weight: 900;">BCV</p>
+                 <br>
+                <p style="font-weight: 900;">BANCO CENTRAL DE VENEZUELA</p>
               </div>
               <div class="icon">
                 <i class="fas fa-university"></i>
@@ -150,7 +150,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <tr>
                     <td>
                       <img src="dist/img/logo/dolartoday.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Dolar Today
+                      DolarToday
                     </td>
                     <td id="dolartoday"></td>
                     
@@ -235,7 +235,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <!-- /.card -->
 
-            
+             
 
            <!--  <div class="card card-primary card-outline">
               <div class="card-header">
@@ -270,21 +270,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <div class="input-group-prepend">
                     <span class="input-group-text">VES</span>
                   </div>
-                  <input type="Number" class="form-control" placeholder="Bolivares" disabled="">
+                  <input type="text" class="form-control" placeholder="Bolivares" id="num" onkeyup="calcuves(this.value)">
                 </div>
 
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text">USD</span>
                   </div>
-                  <input type="Number" class="form-control" placeholder="Doalares" disabled="">
+                  <input type="Number" class="form-control" placeholder="Doalares" id="num2" onkeyup="calcuusd(this.value)">
                 </div>
 
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text">BTC</span>
                   </div>
-                  <input type="Number" class="form-control" placeholder="Bitcoin" disabled="">
+                  <input type="Number" class="form-control" placeholder="Bitcoins" id="num3" onkeyup="calcubtc(this.value)">
                 </div>
                  <!-- /.row -->
               </div>
@@ -374,23 +374,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
+<script src="plugins/chart.js/Chart.min.js"></script>
+<script src="dist/js/demo.js"></script>
 
 <script type="text/javascript">	
 
 
-      $(window).load(function() {
-          $(".loader").fadeOut("slow");
 
-
-      });
+     
       function imprimir(id,valor){
               let element = document.getElementById(id)
             element.innerHTML =`<p>`+ new Intl.NumberFormat().format(valor) +` </p>`;
             
             }
-            function imprimirlabel(id,moneda,valor){
+            function imprimirlabel(id,tag,moneda,valor){
               let element = document.getElementById(id)
-            element.innerHTML =`<h3> `+ moneda+ new Intl.NumberFormat().format(valor) +` </h3>`;
+            element.innerHTML =`<`+ tag+`> `+ moneda+ new Intl.NumberFormat().format(valor) +` </`+ tag+`>`;
             
             }
             function total(v1,v2,v3,v4){
@@ -403,7 +402,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             }
 
 
-      const url = "https://api-obetoday.herokuapp.com/averages"
+      const url = "https://api-obetoday.herokuapp.com/currency-conversion"
           fetch(url)
           .then(response => response.json() )
           .then(data =>{ 
@@ -414,9 +413,76 @@ scratch. This page gets rid of all links and provides the needed markup only.
             imprimir("local",`${data.localbitcoin}`);
             imprimir("total",total(`${data.dolartoday_usd}`,`${data.yadio}`,`${data.dolartoday_btc}`,`${data.localbitcoin}`));
             /*Promedios Label*/
-            imprimirlabel("labelprome","Bs ",total(`${data.dolartoday_usd}`,`${data.yadio}`,`${data.dolartoday_btc}`,`${data.localbitcoin}`));
+            imprimirlabel("labelprome","h3","VES ",total(`${data.dolartoday_usd}`,`${data.yadio}`,`${data.dolartoday_btc}`,`${data.localbitcoin}`));
+            imprimirlabel("labelbtc","h3","USD ",`${data.btc_in_usd}`);
+            imprimirlabel("labelbtcusd","span","VES ",`${data.btc_in_ves}`);
+            imprimirlabel("labelbcv","h3","VES ",`${data.bcv_usd_in_ves}`);
+
+
+
+              function promediousd(){
+              var promediousd = total(`${data.dolartoday_usd}`,`${data.yadio}`,`${data.dolartoday_btc}`,`${data.localbitcoin}`);
+              return promediousd;
+
+            }
+
+            /*OTROS*/
+             $(".loader").fadeOut("slow");
+
+             /*-----------------*/
+             
 
           })
+
+        /*$('#num').focusout(function() {
+           var x = $(this).val(); 
+           var tasausd =(1 / 173357.131)*x;
+           var tasabtc =(1 /1552522159.29) *x;
+           console.log(); 
+           resultado(x,tasausd,tasabtc);
+          });*/
+        function resultado(x,dolar,btc){
+           // Recomiendo usar la consola en lugar de alerts
+          /* console.log(new Intl.NumberFormat().format(x)); */
+          var x2 = x;
+           
+                    
+           document.getElementById("num").value = x2;
+           document.getElementById("num2").value = dolar;
+           document.getElementById("num3").value =btc;
+        };
+        function calcuves(x){
+          
+          var tasausd =(1 / 173357.131)*x;
+           var tasabtc =(1 /1552522159.29) *x;
+           
+
+           resultado(x,tasausd,tasabtc);
+
+
+        }
+         function calcuusd(x){
+          var bs = x*173357.131;
+          var tasausd =x;
+           var tasabtc =(1 /8753.18) *x;
+           
+
+           resultado(bs,tasausd,tasabtc);
+
+
+        }
+         function calcubtc(x){
+          var bs=1552522159.29*x;
+          var tasausd =8753.18*x;
+           var tasabtc =x;
+           
+
+           resultado(bs,tasausd,tasabtc);
+
+
+        }
+
+        
            
 
 
