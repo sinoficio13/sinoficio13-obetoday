@@ -192,7 +192,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       </a>
                     </td>
                   </tr>
-                  <tr>
+                 <!-- <tr>
                     <td>
                       <img src="dist/img/logo/dolartoday.png" alt="Product 1" class="img-circle img-size-32 mr-2">
                       DolarTodayBTC
@@ -204,7 +204,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <i class="fas fa-search"></i>
                       </a>
                     </td>
-                  </tr>
+                  </tr>-->
                   <tr>
                     <td>
                       <img src="dist/img/logo/local.png" alt="Product 1" class="img-circle img-size-32 mr-2">
@@ -277,14 +277,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <div class="input-group-prepend">
                     <span class="input-group-text">USD</span>
                   </div>
-                  <input type="Number" class="form-control" placeholder="Doalares" id="num2" onkeyup="calcuusd(this.value)">
+                  <input type="Number" class="form-control"  placeholder="Doalares" id="num2" onkeyup="calcuusd(this.value)">
                 </div>
 
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text">BTC</span>
                   </div>
-                  <input type="Number" class="form-control" placeholder="Bitcoins" id="num3" onkeyup="calcubtc(this.value)">
+                  <input type="Number" class="form-control" placeholder="Bitcoins" id="num3" onkeyup="calcubtc(this.value)" disabled="">
                 </div>
                  <!-- /.row -->
               </div>
@@ -378,7 +378,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="dist/js/demo.js"></script>
 
 <script type="text/javascript">	
-
+      var vVES = 0;
+      var vVESBTC = 0;
+      var vUSD = 0;
+      var vBTC = 0;
+      
 
 
      
@@ -397,7 +401,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               var vv2= parseFloat(v2);
               var vv3= parseFloat(v3);
               var vv4= parseFloat(v4);
-              var vtotal = (vv1 + vv2 + vv3 +vv4)/4;             
+              var vtotal = (vv1 + vv2 +vv4)/3;             
               return vtotal;
             }
 
@@ -409,14 +413,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
             /*PROMEDIOS TABLA*/
             imprimir("dolartoday",`${data.dolartoday_usd}`);
             imprimir("yadio",`${data.yadio}`);
-            imprimir("dolartodaybtc",`${data.dolartoday_btc}`);
+            /*imprimir("dolartodaybtc",`${data.dolartoday_btc}`);*/
             imprimir("local",`${data.localbitcoin}`);
             imprimir("total",total(`${data.dolartoday_usd}`,`${data.yadio}`,`${data.dolartoday_btc}`,`${data.localbitcoin}`));
             /*Promedios Label*/
-            imprimirlabel("labelprome","h3","VES ",total(`${data.dolartoday_usd}`,`${data.yadio}`,`${data.dolartoday_btc}`,`${data.localbitcoin}`));
+            imprimirlabel("labelprome","h3","VES ",promediousd());
             imprimirlabel("labelbtc","h3","USD ",`${data.btc_in_usd}`);
             imprimirlabel("labelbtcusd","span","VES ",`${data.btc_in_ves}`);
             imprimirlabel("labelbcv","h3","VES ",`${data.bcv_usd_in_ves}`);
+              vVES=promediousd();
+              vVESBTC= parseFloat(`${data.btc_in_ves}`);
+              vUSD= parseFloat(`${data.btc_in_usd}`);
+             
+          
 
 
 
@@ -425,6 +434,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
               return promediousd;
 
             }
+
+
+            
 
             /*OTROS*/
              $(".loader").fadeOut("slow");
@@ -441,20 +453,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
            console.log(); 
            resultado(x,tasausd,tasabtc);
           });*/
+
+         /* function vVES(x){
+              var VES= parseFloat(x);
+              return VES;
+            }*/
         function resultado(x,dolar,btc){
            // Recomiendo usar la consola en lugar de alerts
           /* console.log(new Intl.NumberFormat().format(x)); */
           var x2 = x;
            
                     
-           document.getElementById("num").value = x2;
-           document.getElementById("num2").value = dolar;
-           document.getElementById("num3").value =btc;
+           document.getElementById("num").value = roundTo(x2, 2);
+           document.getElementById("num2").value =roundTo( dolar,4);
+           document.getElementById("num3").value =roundTo(btc,4);
         };
+          function roundTo(value, places){
+             var power = Math.pow(10, places);
+             return Math.round(value * power) / power;
+         }
         function calcuves(x){
-          
-          var tasausd =(1 / 173357.131)*x;
-           var tasabtc =(1 /1552522159.29) *x;
+          console.log(vVES);
+          var tasausd =(1 / vVES)*x;
+           var tasabtc =(1 /vVESBTC) *x;
            
 
            resultado(x,tasausd,tasabtc);
@@ -462,9 +483,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         }
          function calcuusd(x){
-          var bs = x*173357.131;
+          var bs = x*vVES;
           var tasausd =x;
-           var tasabtc =(1 /8753.18) *x;
+           var tasabtc =(1 /vUSD) *x;
            
 
            resultado(bs,tasausd,tasabtc);
@@ -472,21 +493,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         }
          function calcubtc(x){
-          var bs=1552522159.29*x;
-          var tasausd =8753.18*x;
+          var bs=vVESBTC*x;
+          var tasausd =vUSD*x;
            var tasabtc =x;
            
 
            resultado(bs,tasausd,tasabtc);
 
 
-        }
-
-        
-           
-
-
-
+        }        
 	</script>
   </body>
 </html>
